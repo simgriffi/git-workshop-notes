@@ -9,6 +9,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
         free download in PDF, ePub formats)
 2. http://git-scm.com/documentation (many other Books, Videos)
 3. Wikipedia [Git (Software)](http://en.wikipedia.org/wiki/Git_%28software%29)
+4. Getting Started with Git by Matthew McCullough, DZone Refcardz
 
 ###Slide 2
 ##Git Overview
@@ -31,6 +32,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
          $ git config --global user.name "Raymond Rusk"
          $ git config --global user.email "rarusk@cisco.com"
+         $ git config --global color.ui "auto"
 
         On a Unix, OS X or Cygwin host, configure you favorite
         editor (needed for commit messages):  
@@ -88,13 +90,36 @@ See 3stage.pdf
        $ git add Notes.md
        $ git commit -m"First commit of workshop notes"
 
-   Alternately, can add and commit in one step  
+   Alternately, can add and commit in one step
 
        $ git commit -am"First commit with no staging"
 
-   Can interactively add chunks from working file to staging using
+   Files can be added to staging by name or by wildcard
+
+       $ git add submodule1/PrimaryClass.java
+       $ git add .
+       $ git add *.java
+
+   Can interactively add pieces from working file to staging using
 
        $ git add -p Notes.md
+
+### Slide 6.1
+##Git Basic Usage
+
+Rather than using a sequential revision ID, Git marks
+each commit with an SHA1 hash unique to the person committing the
+changes, the folders, and the files comprising the changeset, allowing
+commits to be independent of a central coordinating server.
+
+For convenient, the current committed version is also called HEAD.
+To view the SHA1 hash identifying head use
+
+	$ git rev-parse HEAD
+
+Earlier commits can be referenced by SHA1 or by using
+
+	HEAD^, HEAD^^, HEAL-1, HEAD-2, etc.
 
 ### Slide 7
 ##Git Basic Usage (cont'd)  
@@ -209,7 +234,19 @@ available at https://github.com/github/gitignore.git
 
 ### Slide 12
 ##Git Basic Usage (cont'd)  
-7) Check File Authoring using
+7) Aborting work in progress
+
+* To restore the working copy to the last committed state
+
+        $ git reset --hard
+
+* To restore just one file to its previous committed state
+
+        $ git checkout -- Person.java
+
+### Slide 12.1
+##Git Basic Usage (cont'd)  
+8) Check File Authoring using
 
         $ git blame filename.ext
 
@@ -280,7 +317,15 @@ available at https://github.com/github/gitignore.git
 
         Here <REF> can be the commit SHA1 of some commit node.
 
-8. Git branches are cheap (20 bytes)
+8. Switch to another branch
+
+        $ git checkout <BRANCHNAME>
+
+9. Create and switch to another branch
+
+        $ git checkout -b <NEWBRANCH> <FROMBRANCH>
+
+10. Git branches are cheap (20 bytes)
 
         Create branches for experiments
         Delete failed experiments
@@ -358,6 +403,7 @@ Examples:
         $ git checkout finalbranch
         $ git stash apply
         $ git commit
+
 
 ### Slide 21 and 22
 ## Tagging (cheap)
@@ -517,15 +563,15 @@ Purges untracked files.  Leaves ignored and tracked files alone.
         $ git svn dcommit
 
 ### Slide 30
-## Pulling/Fetching
+## Fetching/Pulling
 
-1. Git pull commands merge by default
-
-        $ git pull
-
-2. Git fetch commands do not merge
+1. Git fetch commands do not merge
 
 	$ git fetch
+
+2. Git pull commands merge by default
+
+        $ git pull
 
 3. Git pull with rebase
 
