@@ -2,14 +2,15 @@
 ##Git Lunch and Learn
 ### Raymond Rusk and John Zhao
 
-This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012.
+This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 and on other material presented in the following resources.
 
 ####Resources:
 1. [Pro Git](http://git-scm.com/book) by Scott Chacon, Apress, 2009;
         free download in PDF, ePub formats)
-2. http://git-scm.com/documentation (many other Books, Videos)
+2. [http://git-scm.com/documentation](http://git-scm.com/documentation) - many other Books, Videos
 3. Wikipedia [Git (Software)](http://en.wikipedia.org/wiki/Git_%28software%29)
-4. Getting Started with Git by Matthew McCullough, DZone Refcardz
+4. "Getting Started with Git" by Matthew McCullough, [DZone Refcardz](http://refcardz.dzone.com)
+5. [Gitimmersion.com](http://gitimmersion.com) online Git lab
 
 ###Slide 2
 ##Git Overview
