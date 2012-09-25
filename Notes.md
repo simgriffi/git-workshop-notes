@@ -182,7 +182,7 @@ available at https://github.com/github/gitignore.git
 
    Alternately, remove file at OS level and follow up with git add:
 
-        $ git <FILENAME>
+        $ rm <FILENAME>
         $ git add -u .
 
 
@@ -417,9 +417,8 @@ Examples:
         $ git checkout master
         $ git merge <fb1> <fb2> <fb3>
 
-3.  Subtree merge (useful if multiple repos are
+3.  Subtree merge (useful if multiple repos are blended together into a single repo)
 
-        blended together into a single repo)
         $ git checkout master
         $ git merge -s subtree <fb1>
 
