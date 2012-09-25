@@ -2,7 +2,7 @@
 ##Git Lunch and Learn
 ### Raymond Rusk and John Zhao
 
-This mini-workshop is based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012.
+This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012.
 
 ####Resources:
 1. [Pro Git](http://git-scm.com/book) by Scott Chacon, Apress, 2009;
@@ -48,11 +48,17 @@ This mini-workshop is based on material presented by Matthew McCullough at the V
 1. Create a local Git repo using `git init`  
 
      
-     `$ mkdir mynewdir`  
-     `$ cd mynewdir`  
+     `$ mkdir mynewprj`  
+     `$ cd mynewprj`  
      `$ git status # no git repo reported`  
      `$ git init`  
      `$ git status # git repo exists`
+
+     or
+
+     `$ git init mynewprj`  
+     `$ cd mynewprj`  
+     `$ git status`
         
 2. Create a local Git repo using `git clone`:  
 
@@ -67,7 +73,7 @@ This mini-workshop is based on material presented by Matthew McCullough at the V
 Using Git involves 3-stage thinking
 
 1. Edit in working directory
-2. Add working file to staging
+2. Add working file to staging (index)
 3. Commit staged file to repo  
 
 See 3stage.pdf
@@ -86,21 +92,33 @@ See 3stage.pdf
 
        $ git commit -am"First commit with no staging"
 
+   Can interactively add chunks from working file to staging using
+
+       $ git add -p Notes.md
+
 ### Slide 7
 ##Git Basic Usage (cont'd)  
 2) Show file changes  
 
 1. Show unstaged changes (diff working and staging areas)  
-        `$ git diff`
+
+        $ git diff
 2. Show staged changes (diff staging and repo code)  
-        `$ git diff --staged`
+
+        $ git diff --staged
 3. Show changes in working and repo code  
-        `$ git diff HEAD`
+
+        $ git diff HEAD
+        $ git diff HEAD~5 # use 'git rev-parse HEAD~5' to see SHA1
 4. Limiting diff output
-   1. Show word changes rather than line differences  
+
+  1. Show word changes rather than line differences
+
         `$ git diff --color-words`  
         `$ git diff --word-diff`
-   2. Ignore whitespace  
+
+  2. Ignore whitespace  
+
         `$ git diff -w`
 
 ### Slide 8
@@ -108,17 +126,30 @@ See 3stage.pdf
 3)  Show history of commits  
 
 1. Show all history  
+
      `$ git log`
+
 2. Show all history with filenames  
+
      `$ git log --stat`
+
 3. Show all history with patches  
+
      `$ git log -p`  
      `$ git log --patch`
+
 4. Limit output  
-     `$ git log -n, n = 1,2,3...`
+
+     `$ git log --oneline # one line per commit`  
+     `$ git log -n        # n = 1,2,3... commits`
+
 5. Control log format  
+
      `$ git log --pretty=full  # or fuller, email, raw, format:<pattern>`
+     `$ git log --graph --abbrev-commit --relative --decorate --oneline`
+
 6. Limit output to added files  
+
      `$ git log --diff-filter=A`
 
 ### Slide 9
@@ -224,6 +255,8 @@ available at https://github.com/github/gitignore.git
 
         $ git remote prune <REMOTENAME>
 
+	$ git remote -v # verbose listing of remote branches
+
 3. List all branches
 
         $ git branch -a
@@ -316,8 +349,15 @@ Examples:
 
 5. Convert a stash to a branch
 
-        $ git stash branch <newbr>
+        $ git stash branch workinprogress 
         $ git stash branch <newbr> stash@{3}
+
+6. Relocating commits with stash
+
+        $ git stash
+        $ git checkout finalbranch
+        $ git stash apply
+        $ git commit
 
 ### Slide 21 and 22
 ## Tagging (cheap)
@@ -478,13 +518,17 @@ Purges untracked files.  Leaves ignored and tracked files alone.
         $ git svn dcommit
 
 ### Slide 30
-## Pulling
+## Pulling/Fetching
 
 1. Git pull commands merge by default
 
         $ git pull
 
-2. Git pull with rebase
+2. Git fetch commands do not merge
+
+	$ git fetch
+
+3. Git pull with rebase
 
         $ git pull --rebase
 
