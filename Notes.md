@@ -237,9 +237,25 @@ available at https://github.com/github/gitignore.git
 ##Git Basic Usage (cont'd)  
 7) Aborting work in progress
 
+* For a file that is changed but not staged
+
+        $ git checkout <file>
+
+* For a file that is changed and has been staged
+
+        $ git reset HEAD <file> # removes changes from staging area
+        $ git checkout <file>   # removes changes from working file
+
 * To restore the working copy to the last committed state
 
         $ git reset --hard
+
+* To restore the working copy to a specific commit
+
+        $ git reset --hard <ref> # <ref> can be tag or SHA-1
+
+  * Beware! When bad commits have already been pushed to a remote repository, resetting to a prior commit can confuse other users sharing the branch.
+  * If you have made bad commits that have been tagged, reset removes them from your branch but not the repository.  They are still accessible through their tags and can be seen with `git log --all`.  To allow the commits to be garbage collected, remove the tags with `git tag -d <tagname>`.
 
 * To restore just one file to its previous committed state
 
@@ -366,6 +382,15 @@ Examples:
         $ git config --global alias.cns "commit -a"
         $ git config --global alias.sync "!git pull && git push"
 
+or edit `$HOME/.gitconfig` directly.  For instance,
+
+        [alias]
+          co = checkout
+          ci = commit
+          st = status
+          br = branch
+          lg = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+
 
 ### Slide 19 and 20
 ## Stashes
@@ -433,21 +458,24 @@ Examples:
 
         $ git tag
 
-5. Show a tag's content
+5. Remove a tag
+
+	$ git tag -d <TAGNAME>
+
+6. Show a tag's content
 
         $ git show tag
         $ git show <TAGNAME>
 
-6. Push tags
+8. Push tags
 
-   Tags don't push by default
-
+   Tags don't push by default  
    Push all tags
 
         $ git push <remote> <tag>
         $ git push --tags
 
-7. Fetch tags
+8. Fetch tags
 
         Tags do fetch by default
 
@@ -520,9 +548,9 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
 ### Slide 27
 ## Revert commits
-1. Revert a single commit
+1. Revert a single commit (will remain visible in branch history)
 
-        $ git revert <ref>
+        $ git revert <ref> # use HEAD as <ref> for most recent commit
 
 2. Revert a range of commits
         (<ref1>, <ref2> must be in right order)
@@ -531,9 +559,9 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
 ### Slide 28
 ## Amend commits
-1. Modify a bad commit message
+1. Modify a bad commit message (in HEAD commit)
 
-        $ git commit --amend
+        $ git commit --amend -m "Much better commit message"
 
 2. Add missing file
 
