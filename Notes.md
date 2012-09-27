@@ -154,6 +154,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
     4. Limit output  
 
        `$ git log --oneline # one line per commit`  
+       `$ git log --max-count=1
        `$ git log -n        # n = 1,2,3... commits`
 
     5. Control log format  
@@ -199,7 +200,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
         `$ git mv <FILENAME> <NEWFILENAME>`  
 
-     Alternately, at OS level and follow up with git add:
+     Alternately, at OS level use `mv` and follow up with `git add`:
 
         `$ mv <FILENAME> <NEWFILENAME>`  
         `$ git add -A .`  
@@ -247,21 +248,21 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
         `$ git blame filename.ext -C`  
 
 ##More about Cloning URLs
-1. File-based (could be network fileserver)
+1. File-based url (could be network fileserver)
 
         $ git clone file://repos/project
         $ git clone /repos/project
 
-2. git
+2. git url
 
         $ git clone git://server/project.git
 
-3. ssh (read-only or read-write)
+3. ssh url (read-only or read-write)
 
         $ git clone git+ssh://user@server:project.git
         $ git clone user@server:project.git
 
-4. http
+4. http url
 
         $ git clone http://server/project.git
         $ git clone https://server/project.git
