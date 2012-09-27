@@ -1,5 +1,4 @@
-### Slide 1
-##Git Lunch and Learn
+#Git Lunch and Learn
 ### Raymond Rusk and John Zhao
 
 This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 and on other material presented in the following resources.
@@ -12,7 +11,6 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 4. "Getting Started with Git" by Matthew McCullough, [DZone Refcardz](http://refcardz.dzone.com)
 5. [Gitimmersion.com](http://gitimmersion.com) online Git lab
 
-###Slide 2
 ##Git Overview
 
 * Local repository is a full copy of the remote
@@ -20,7 +18,6 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 * Almost all activities happen offline on local disk
 * Offline activities are `git push`'ed to remotes
 
-###Slide 3
 ##Initial Git Configuration
 
 * To check your Git version and configuration:  
@@ -45,7 +42,6 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
          $ git config --global core.editor "vim"
 
 
-### Slide 4
 ##Git Repo Creation
 
 1. Create a local Git repo using `git init`  
@@ -70,208 +66,186 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
      `$ git clone git@github.com:rrusk/git-workshop-notes.git`  
      `$ cd git-workshop-notes`
 
-### Slide 5
 ##Git Usage Overview
 
-Using Git involves 3-stage thinking
+* Using Git involves 3-stage thinking - see 3stage.pdf
 
-1. Edit in working directory
-2. Add working file to staging (index)
-3. Commit staged file to repo  
+    * Edit in working directory
+    * Add working file to staging (index)
+    * Commit staged file to repo  
 
-See 3stage.pdf
 
-### Slide 6
-##Git Basic Usage
+1. __Adding and committing code__
 
-1) Adding and committing code  
-
-       $ vim Notes.md
-       $ git status  
-       $ git add Notes.md
-       $ git commit -m"First commit of workshop notes"
+       `$ vim Notes.md`  
+       `$ git status`  
+       `$ git add Notes.md`  
+       `$ git commit -m"First commit of workshop notes"`
 
    Alternately, can add and commit in one step
 
-       $ git commit -am"First commit with no staging"
+       `$ git commit -am"First commit with no staging"`
 
    Files can be added to staging by name or by wildcard
 
-       $ git add submodule1/PrimaryClass.java
-       $ git add .
-       $ git add *.java
+       `$ git add submodule1/PrimaryClass.java`  
+       `$ git add .`  
+       `$ git add *.java`  
 
    Can interactively add pieces from working file to staging using
 
-       $ git add -p Notes.md
+       `$ git add -p Notes.md`  
 
-### Slide 6.1
-##Git Basic Usage
+   Note!  Rather than using a sequential revision ID, Git marks
+   each commit with an SHA1 hash unique to the person committing the
+   changes, the folders, and the files comprising the changeset, allowing
+   commits to be independent of a central coordinating server.
 
-Rather than using a sequential revision ID, Git marks
-each commit with an SHA1 hash unique to the person committing the
-changes, the folders, and the files comprising the changeset, allowing
-commits to be independent of a central coordinating server.
+   For convenient, the current committed version is also called HEAD.
+   To view the SHA1 hash identifying head use
 
-For convenient, the current committed version is also called HEAD.
-To view the SHA1 hash identifying head use
+       `$ git rev-parse HEAD`  
 
-	$ git rev-parse HEAD
+   Earlier commits can be referenced by SHA1 or by using
 
-Earlier commits can be referenced by SHA1 or by using
+       `HEAD^, HEAD^^, HEAL-1, HEAD-2, etc.`  
 
-	HEAD^, HEAD^^, HEAL-1, HEAD-2, etc.
+2. __Show file changes__
 
-### Slide 7
-##Git Basic Usage (cont'd)  
-2) Show file changes  
+    1. Show unstaged changes (diff working and staging areas)  
 
-1. Show unstaged changes (diff working and staging areas)  
+        `$ git diff`
 
-        $ git diff
-2. Show staged changes (diff staging and repo code)  
+    2. Show staged changes (diff staging and repo code)  
 
-        $ git diff --staged
-3. Show changes in working and repo code  
+        `$ git diff --staged`
 
-        $ git diff HEAD
-        $ git diff HEAD~5 # use 'git rev-parse HEAD~5' to see SHA1
-4. Limiting diff output
+    3. Show changes in working and repo code  
 
-  1. Show word changes rather than line differences
+        `$ git diff HEAD`
+        `$ git diff HEAD~5 # use 'git rev-parse HEAD~5' to see SHA1`
 
-        `$ git diff --color-words`  
-        `$ git diff --word-diff`
+    4. Limiting diff output  
 
-  2. Ignore whitespace  
+        1. Show word changes rather than line differences
 
-        `$ git diff -w`
+          `$ git diff --color-words`  
+          `$ git diff --word-diff`  
 
-### Slide 8
-##Git Basic Usage (cont'd)  
-3)  Show history of commits  
+        2. Ignore whitespace  
 
-1. Show all history  
+          `$ git diff -w`
 
-     `$ git log`
+3.  __Show history of commits__
 
-2. Show all history with filenames  
+    1. Show all history  
 
-     `$ git log --stat`
+       `$ git log`
 
-3. Show all history with patches  
+    2. Show all history with filenames  
 
-     `$ git log -p`  
-     `$ git log --patch`
+       `$ git log --stat`
 
-4. Limit output  
+    3. Show all history with patches  
 
-     `$ git log --oneline # one line per commit`  
-     `$ git log -n        # n = 1,2,3... commits`
+       `$ git log -p`  
+       `$ git log --patch`
 
-5. Control log format  
+    4. Limit output  
 
-     `$ git log --pretty=full  # or fuller, email, raw, format:<pattern>`
-     `$ git log --graph --abbrev-commit --relative --decorate --oneline`
+       `$ git log --oneline # one line per commit`  
+       `$ git log -n        # n = 1,2,3... commits`
 
-6. Limit output to added files  
+    5. Control log format  
 
-     `$ git log --diff-filter=A`
+       `$ git log --pretty=full  # or fuller, email, raw, format:<pattern>`  
+       `$ git log --graph --abbrev-commit --relative --decorate --oneline`
 
-### Slide 9
-##Git Basic Usage (cont'd)  
-4) Ignoring files
+    6. Limit output to added files  
 
-1. Via local .gitignore
+       `$ git log --diff-filter=A`
 
-        $ vim .gitignore
+4. __Ignoring files__
 
-        #Add patterns to .gitignore, one per line
-        *.log
-        *.tmp
-        target
-        output/
-        !wanted.log
+    1. Via local .gitignore  
 
-2. Templates for many different development environments are
-available at https://github.com/github/gitignore.git
+        `$ vim .gitignore`  
 
+        `#Add patterns to .gitignore, one per line`  
+        `*.log`  
+        `*.tmp`  
+        `target`  
+        `output/`  
+        `!wanted.log`  
 
-### Slide 10
-##Git Basic Usage (cont'd)  
+    2. Templates for many different development environments are
+       available at [https://github.com/github/gitignore.git](https://github.com/github/gitignore.git)
 
-5) Removing files
+5. __Removing files__  
 
-* Directly remove & stage deletion  
+     1. Directly remove & stage deletion  
 
-        $ git rm <FILENAME>
+        `$ git rm <FILENAME>`  
 
-   Alternately, remove file at OS level and follow up with git add:
+     2. Alternately, remove file at OS level and follow up with git add:
 
-        $ rm <FILENAME>
-        $ git add -u .
+        `$ rm <FILENAME>`  
+        `$ git add -u .`  
 
 
-### Slide 11
-##Git Basic Usage (cont'd)  
+6. __Moving files__
 
-6) Moving files
+    1. Directly move and stage
 
-* Directly move and stage
-
-        $ git mv <FILENAME> <NEWFILENAME>
+        `$ git mv <FILENAME> <NEWFILENAME>`  
 
      Alternately, at OS level and follow up with git add:
 
-        $ mv <FILENAME> <NEWFILENAME>
-        $ git add -A .
+        `$ mv <FILENAME> <NEWFILENAME>`  
+        `$ git add -A .`  
 
-* Git tracks file content by similarity index rather than file names.
+    2. Git tracks file content by similarity index rather than file names.
         To see history of copies and renames use:
 
-        $ git log --stat -C     # checks modified files as copy source
-        $ git log --stat -C -C  # checks unmodified files also, expensive!
+        `$ git log --stat -C     # checks modified files as copy source`  
+        `$ git log --stat -C -C  # checks unmodified files also, expensive!`  
 
 
-### Slide 12
-##Git Basic Usage (cont'd)  
-7) Aborting work in progress
+7. __Aborting work in progress__
 
-* For a file that is changed but not staged
+     1. For a file that is changed but not staged
 
-        $ git checkout <file>
+        `$ git checkout <file>`  
 
-* For a file that is changed and has been staged
+     2. For a file that is changed and has been staged
 
-        $ git reset HEAD <file> # removes changes from staging area
-        $ git checkout <file>   # removes changes from working file
+        `$ git reset HEAD <file> # removes changes from staging area`  
+        `$ git checkout <file>   # removes changes from working file`  
 
-* To restore the working copy to the last committed state
+     3. To restore the working copy to the last committed state
 
-        $ git reset --hard
+        `$ git reset --hard`  
 
-* To restore the working copy to a specific commit
+     4. To restore the working copy to a specific commit
 
-        $ git reset --hard <ref> # <ref> can be tag or SHA-1
+        `$ git reset --hard <ref> # <ref> can be tag or SHA-1`  
 
-  * Beware! When bad commits have already been pushed to a remote repository, resetting to a prior commit can confuse other users sharing the branch.
-  * If you have made bad commits that have been tagged, reset removes them from your branch but not the repository.  They are still accessible through their tags and can be seen with `git log --all`.  To allow the commits to be garbage collected, remove the tags with `git tag -d <tagname>`.
+        1. Beware! When bad commits have already been pushed to a remote repository, resetting to a prior commit can confuse other users sharing the branch.
+        2. If you have made bad commits that have been tagged, reset removes them from your branch but not the repository.  They are still accessible through their tags and can be seen with `git log --all`.  To allow the commits to be garbage collected, remove the tags with `git tag -d <tagname>`.
 
-* To restore just one file to its previous committed state
+     5. To restore just one file to its previous committed state
 
-        $ git checkout -- Person.java
+        `$ git checkout -- Person.java`  
 
-### Slide 12.1
-##Git Basic Usage (cont'd)  
-8) Check File Authoring using
 
-        $ git blame filename.ext
+8. __Check File Authoring using__
 
-  * True source of code shown with
+        `$ git blame filename.ext`  
 
-        $ git blame filename.ext -C
+    1.  True source of code shown with
 
-### Slide 13
+        `$ git blame filename.ext -C`  
+
 ##More about Cloning URLs
 1. File-based (could be network fileserver)
 
@@ -292,7 +266,6 @@ available at https://github.com/github/gitignore.git
         $ git clone http://server/project.git
         $ git clone https://server/project.git
 
-### Slides 14 and 15
 ##Branches
 1. List local branches
 
@@ -309,7 +282,7 @@ available at https://github.com/github/gitignore.git
 
         $ git remote prune <REMOTENAME>
 
-	$ git remote -v # verbose listing of remote branches
+        $ git remote -v # verbose listing of remote branches
 
 3. List all branches
 
@@ -347,7 +320,6 @@ available at https://github.com/github/gitignore.git
         Create branches for experiments
         Delete failed experiments
 
-### Slide 17
 ## Commit/Push/Pull
 
 1. Commit
@@ -371,7 +343,6 @@ available at https://github.com/github/gitignore.git
         Merge changes into local branch
         Commit the merge to the local branch
 
-### Slide 18
 ## Aliases
 
 Examples:
@@ -392,7 +363,6 @@ or edit `$HOME/.gitconfig` directly.  For instance,
           lg = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 
 
-### Slide 19 and 20
 ## Stashes
 
         Super quick branch
@@ -431,7 +401,6 @@ or edit `$HOME/.gitconfig` directly.  For instance,
         $ git commit
 
 
-### Slide 21 and 22
 ## Tagging (cheap)
 
         Reference, annotated and signed tag types
@@ -460,7 +429,7 @@ or edit `$HOME/.gitconfig` directly.  For instance,
 
 5. Remove a tag
 
-	$ git tag -d <TAGNAME>
+        $ git tag -d <TAGNAME>
 
 6. Show a tag's content
 
@@ -479,7 +448,6 @@ or edit `$HOME/.gitconfig` directly.  For instance,
 
         Tags do fetch by default
 
-### Slide 23
 ## Merging
 
 1. Merging a feature branch into master branch
@@ -497,7 +465,6 @@ or edit `$HOME/.gitconfig` directly.  For instance,
         $ git checkout master
         $ git merge -s subtree <fb1>
 
-### Slide 24
 ## Rebasing
 
 1. Retrieve upstream changes and relocate your
@@ -517,7 +484,6 @@ or edit `$HOME/.gitconfig` directly.  For instance,
 3. Warning: Do not rebase your code once it has already
   been committed to remote repositories!
 
-### Slide 25 and 26
 ## Clean
 
 Purges untracked files.  Leaves ignored and tracked files alone.
@@ -546,7 +512,6 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
         $ git clean -xdf
 
-### Slide 27
 ## Revert commits
 1. Revert a single commit (will remain visible in branch history)
 
@@ -557,7 +522,6 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
         $ git revert <ref1>..<ref2>
 
-### Slide 28
 ## Amend commits
 1. Modify a bad commit message (in HEAD commit)
 
@@ -569,7 +533,6 @@ Purges untracked files.  Leaves ignored and tracked files alone.
         $ git commit --amend
 
 
-### Slide 29
 ## Git-svn
 
 1. Clone one branch
@@ -591,12 +554,11 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
         $ git svn dcommit
 
-### Slide 30
 ## Fetching/Pulling
 
 1. Git fetch commands do not merge
 
-	$ git fetch
+        $ git fetch
 
 2. Git pull commands merge by default
 
@@ -610,7 +572,6 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
         $ git config branch.autosetuprebase always
 
-### Slide 31
 ## Pushing configuration
 
 1. Push all branches having the same name locally
@@ -630,10 +591,8 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
         $ git config --global push.default current
 
-### Slide 32
 ## Cherry pick merging
 
    Merge in just one commit (not entire branch)
 
         $ git cherry-pick a5b2ee
-  
