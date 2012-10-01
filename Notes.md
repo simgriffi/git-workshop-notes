@@ -21,7 +21,8 @@ This [mini-workshop](https://github.com/rrusk/git-workshop-notes) is partially b
 ##Installing Git
 
 * Download _command-line git_ from [http://git-scm.com/download](http://git-scm.com/download)  
-  It is included in most Linux distributions.
+  It is included in most Linux distributions.  
+  The Windows command-line version is available at [mysysgit.github.com](http://msysgit.github.com).
 
 * Several GUI clients exist.  Git comes with 'gitk' for viewing commit history.  
   Window's TortoiseSVN users might like [TortoiseGit](http://code.google.com/p/tortoisegit).
