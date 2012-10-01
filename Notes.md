@@ -26,7 +26,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 * Several GUI clients exist.  Git comes with 'gitk' for viewing commit history.  
   Window's TortoiseSVN users might like [TortoiseGit](http://code.google.com/p/tortoisegit).
 
-* Also, there is a Git plugins for Eclipse [EGit](http://www.eclipse.org/egit/) and Git support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.htm](http://netbeans.org/kb/docs/ide/git.htm)
+* Also, there is a Git plugins for Eclipse [EGit](http://www.eclipse.org/egit/) and Git support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.htm](http://netbeans.org/kb/docs/ide/git.html)
 
 ##Initial Git Configuration
 
