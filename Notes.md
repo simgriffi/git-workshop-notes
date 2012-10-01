@@ -1,7 +1,7 @@
 #Git Lunch and Learn
 ### Raymond Rusk and John Zhao
 
-This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 supplemented by material from the following resources.
+This [mini-workshop](https://github.com/rrusk/git-workshop-notes) is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 supplemented by material from the following resources.
 
 ####Resources:
 1. [Pro Git](http://git-scm.com/book) by Scott Chacon, Apress, 2009  
@@ -26,7 +26,8 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 * Several GUI clients exist.  Git comes with 'gitk' for viewing commit history.  
   Window's TortoiseSVN users might like [TortoiseGit](http://code.google.com/p/tortoisegit).
 
-* Also, there is a Git plugins for Eclipse [EGit](http://www.eclipse.org/egit/) and Git support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.htm](http://netbeans.org/kb/docs/ide/git.html)
+* Also, there is a Git plugin for Eclipse, [EGit](http://www.eclipse.org/egit/), and Git  
+support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.html](http://netbeans.org/kb/docs/ide/git.html)
 
 ##Initial Git Configuration
 
@@ -185,12 +186,15 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
         `#Add patterns to .gitignore, one per line`  
         `*.log`  
         `*.tmp`  
-        `target`  
+        `target/`  
         `output/`  
         `!wanted.log`  
 
-    2. Gitignore templates for many different development environments are
-       available at [https://github.com/github/gitignore.git](https://github.com/github/gitignore.git)
+    2. Objects already in the repository will not not ignored,  
+       regardless of their being listed in `.gitignore`.
+
+    3. Gitignore templates for many different development environments  
+       are available at [https://github.com/github/gitignore.git](https://github.com/github/gitignore.git)
 
 5. __Removing files__  
 
