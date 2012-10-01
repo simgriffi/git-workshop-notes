@@ -1,11 +1,11 @@
 #Git Lunch and Learn
 ### Raymond Rusk and John Zhao
 
-This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 and on other material presented in the following resources.
+This mini-workshop is partially based on material presented by Matthew McCullough at the Victoria Java User Group Git Workshop held on August 29, 2012 supplemented by material from the following resources.
 
 ####Resources:
-1. [Pro Git](http://git-scm.com/book) by Scott Chacon, Apress, 2009;
-        free download in PDF, ePub formats)
+1. [Pro Git](http://git-scm.com/book) by Scott Chacon, Apress, 2009  
+        (free download in PDF, ePub formats)
 2. [http://git-scm.com/documentation](http://git-scm.com/documentation) - many other Books, Videos
 3. Wikipedia [Git (Software)](http://en.wikipedia.org/wiki/Git_%28software%29)
 4. "Getting Started with Git" by Matthew McCullough, [DZone Refcardz](http://refcardz.dzone.com)
@@ -109,14 +109,14 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
    changes, the folders, and the files comprising the changeset, allowing
    commits to be independent of a central coordinating server.
 
-   For convenient, the current committed version is also called HEAD.
+   For convenience, the current committed version is also called HEAD.
    To view the SHA1 hash identifying head use
 
        `$ git rev-parse HEAD`  
 
    Earlier commits can be referenced by SHA1 or by using
 
-       `HEAD^, HEAD^^, HEAL-1, HEAD-2, etc.`  
+       `HEAD^, HEAD^^, HEAD-1, HEAD-2, etc.`  
 
 2. __Show file changes__
 
@@ -130,7 +130,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
     3. Show changes in working and repo code  
 
-        `$ git diff HEAD`
+        `$ git diff HEAD`  
         `$ git diff HEAD~5 # use 'git rev-parse HEAD~5' to see SHA1`
 
     4. Limiting diff output  
@@ -162,7 +162,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
     4. Limit output  
 
        `$ git log --oneline # one line per commit`  
-       `$ git log --max-count=1
+       `$ git log --max-count=1  
        `$ git log -n        # n = 1,2,3... commits`
 
     5. Control log format  
@@ -187,7 +187,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
         `output/`  
         `!wanted.log`  
 
-    2. Templates for many different development environments are
+    2. Gitignore templates for many different development environments are
        available at [https://github.com/github/gitignore.git](https://github.com/github/gitignore.git)
 
 5. __Removing files__  
@@ -280,7 +280,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
         $ git branch
 
-2. List remote branches (stored locally)
+2. List remote branches (but commits are stored locally)
 
         $ git branch -r
 
