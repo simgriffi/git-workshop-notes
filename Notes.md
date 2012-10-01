@@ -18,6 +18,14 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 * Almost all activities happen offline on local disk
 * Offline activities are `git push`'ed to remotes
 
+##Installing Git
+
+* Download _command-line git_ from [http://git-scm.com/download](http://git-scm.com/download)  
+  It is included in most Linux distributions.
+
+* Several GUI clients exist.  Git comes with 'gitk' for viewing commit history.  
+  Window's TortoiseSVN users might like [TortoiseGit](http://code.google.com/p/tortoisegit).
+
 ##Initial Git Configuration
 
 * To check your Git version and configuration:  
@@ -320,7 +328,15 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
         $ git checkout -b <NEWBRANCH> <FROMBRANCH>
 
-10. Git branches are cheap (20 bytes)
+10. Note on remote branch tracking:    
+   `git clone` creates a local repo with all the commits in the  
+   remote repository but branches in the remote repository are  
+   not treated as local branches.  If you need a local branch  
+   that tracks a remote branch use:
+
+   `$ git branch --track <fb> origin/<fb>`
+
+11. Git branches are cheap (20 bytes)
 
         Create branches for experiments
         Delete failed experiments
@@ -336,7 +352,7 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
 2. Push
 
-        $ git push <remote>
+        $ git push <remote_repo> <remote_branch>
         Send code to an upstream server
         Update remote branches
 
@@ -569,9 +585,11 @@ Purges untracked files.  Leaves ignored and tracked files alone.
 
 ## Fetching/Pulling
 
-1. Git fetch commands do not merge
+1. Git fetch commands do not merge (i.e., they retrieve commits from  
+   remote repository but do not merge them into local branches)
 
         $ git fetch
+        $ git merge origin/master
 
 2. Git pull commands merge by default
 
