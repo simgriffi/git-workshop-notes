@@ -278,6 +278,10 @@ This mini-workshop is partially based on material presented by Matthew McCulloug
 
         Remotes are just symbolic names
         The default name is origin if you've cloned
+
+        $ git remote
+        $ git remote show origin
+
         If a remote branch is removed from an upstream
         repository, prune locally using
 
@@ -409,20 +413,20 @@ or edit `$HOME/.gitconfig` directly.  For instance,
 1. Reference tags
    1. Tag head
 
-        $ git tag <TAGNAME>
+        `$ git tag <TAGNAME>`
    2. Tag an existing ref
 
-        $ git tag <TAGNAME> <REF>
+        `$ git tag <TAGNAME> <REF>`
 
 2. Annotated tags
    1. Tag head with annotated tag
 
-        $ git tag -a <TAGNAME>
+        `$ git tag -a <TAGNAME>`
 
 3. Signed tags
    1. Tag head with signed tag
 
-        $ git tag -s <TAGNAME>
+        `$ git tag -s <TAGNAME>`
 
 4. List know tags
 
@@ -456,17 +460,24 @@ or edit `$HOME/.gitconfig` directly.  For instance,
         $ git checkout master
         $ git merge <featurebranch>
 
-2.  Octopus merge
+2. Merge updates in the master branch to a feature branch you are working on
+
+        $ git checkout <featurebranch>
+        $ git merge master
+
+3.  Octopus merge
 
         $ git checkout master
         $ git merge <fb1> <fb2> <fb3>
 
-3.  Subtree merge (useful if multiple repos are blended together into a single repo)
+4.  Subtree merge (useful if multiple repos are blended together into a single repo)
 
         $ git checkout master
         $ git merge -s subtree <fb1>
 
-## Rebasing
+## Rebasing 
+
+Allows merging in code from another branch (often the master branch) while maintaining a clean, linear commit history.
 
 1. Retrieve upstream changes and relocate your
         local changes to the end
@@ -477,13 +488,14 @@ or edit `$HOME/.gitconfig` directly.  For instance,
         $ git checkout master
         $ git rebase origin/master
 
-2. Rebase feature branch on master
+2. Rebase feature branch on master (i.e., add changes on master to feature branch)
 
         $ git checkout <freaturebranch>
         $ git rebase master
 
 3. Warning: Do not rebase your code once it has already
-  been committed to remote repositories!
+  been shared with others.  Rebase is most useful for unshared local
+  branches that you wish to keep synchronized with another branch.
 
 ## Clean
 
