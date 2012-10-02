@@ -76,7 +76,7 @@ support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.html](http://ne
 
 
      `$ cd mynewdir`  
-     `$ git clone git@github.com:rrusk/git-workshop-notes.git`  
+     `$ git clone git://github.com/rrusk/git-workshop-notes.git`  
      `$ cd git-workshop-notes`
 
 ##Git Usage Overview
