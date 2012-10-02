@@ -72,11 +72,18 @@ support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.html](http://ne
      `$ cd mynewprj`  
      `$ git status`
         
-2. Create a local Git repo using `git clone`:  
-
+2. Create a local (read-only) Git repo using `git clone`:  
 
      `$ cd mynewdir`  
      `$ git clone git://github.com/rrusk/git-workshop-notes.git`  
+     `$ cd git-workshop-notes`
+
+3. Create a local (read-write) Git repo using `git clone`:  
+  (This example only works if your rsa public key is stored on  
+   github and I have added you as a collaborator on the project.)
+     
+     `$ cd mynewdir`  
+     `$ git clone git@github.com:rrusk/git-workshop-notes.git # ssh protocol`  
      `$ cd git-workshop-notes`
 
 ##Git Usage Overview
