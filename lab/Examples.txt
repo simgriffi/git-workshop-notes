@@ -13,12 +13,12 @@ $ git config user.name
 $ git config user.email
 
 $ git config --global user.name "Raymond Rusk"
-$ git config --global user.email "rarusk@cisco.com"
+$ git config --global user.email "rrusk@shaw.ca"
 
 $ cat ~/.gitconfig
 [user]
 	name = Raymond Rusk
-	email = rarusk@cisco.com
+	email = rrusk@shaw.ca
 
 # Example 2
 # CREATE A PROJECT
@@ -249,25 +249,25 @@ $ git commit -m "Added a comment"
 #
 $ git log
 commit 6c38d6469965f5d7f454ac5799c57395d1f684e8
-Author: Raymond Rusk <rarusk@cisco.com>
+Author: Raymond Rusk <rrusk@shaw.ca>
 Date:   Tue Oct 2 11:19:57 2012 -0700
 
     Added a comment
 
 commit 42c55422ad3bd5ce2fa6bb7a226ed20019f562e3
-Author: Raymond Rusk <rarusk@cisco.com>
+Author: Raymond Rusk <rrusk@shaw.ca>
 Date:   Tue Oct 2 11:14:10 2012 -0700
 
     Added a default value
 
 commit 5e754d96963fee14fac7ee22e98940bc1ae21927
-Author: Raymond Rusk <rarusk@cisco.com>
+Author: Raymond Rusk <rrusk@shaw.ca>
 Date:   Tue Oct 2 10:44:36 2012 -0700
 
     Using ARGV
 
 commit a40cbd74ebe2c355443cd86a0778066c7b0d19bc
-Author: Raymond Rusk <rarusk@cisco.com>
+Author: Raymond Rusk <rrusk@shaw.ca>
 Date:   Tue Oct 2 10:04:46 2012 -0700
 
     First Commit
@@ -700,7 +700,7 @@ $ git lg
 
 $ cat << EOF > hello.c
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 #include <stdio.h>
 
@@ -725,7 +725,7 @@ $ git commit --amend -m "Add an author/email comment"
  1 file changed, 3 insertions(+)
 
 # 17.4 Review the history
-[rarusk@w510 examples]$ git lg
+$ git lg
 * 7cde9e8 2012-10-02 | Add an author/email comment (HEAD, master) [Raymond Rusk]
 * 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
 * 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
@@ -843,7 +843,7 @@ $ git commit -m "Added greeter function"
 # 19.3 Changes for greet branch: Modify main program
 $ cat << EOF > src/hello.c
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 
   extern void greeter(char *);
@@ -925,7 +925,7 @@ $ git checkout master
 Switched to branch 'master'
 $ cat src/hello.c
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 #include <stdio.h>
 
@@ -946,7 +946,7 @@ $ git checkout greet
 Switched to branch 'greet'
 $ cat src/hello.c
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 
 extern void greeter(char *);
@@ -1038,7 +1038,7 @@ $ git lg --all
 $ git checkout master
 $ cat << EOF > src/hello.c 
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 #include <stdio.h>
 
@@ -1092,7 +1092,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 $ cat src/hello.c
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 
   extern void greeter(char *);
@@ -1116,7 +1116,7 @@ $ cat src/hello.c
 #   We need to manually resolve the conflict.  Change src/hello.c to read:
 
 /*
- * Author: Raymond Rusk (rarusk@cisco.com)
+ * Author: Raymond Rusk (rrusk@shaw.ca)
 */
 
   extern void greeter(char *);

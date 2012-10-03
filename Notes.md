@@ -42,7 +42,7 @@ support in Netbeans 7.1/7.2 [http://netbeans.org/kb/docs/ide/git.html](http://ne
 * To set user-specific Git configuration (saved in `~/.gitconfig`):  
 
          $ git config --global user.name "Raymond Rusk"
-         $ git config --global user.email "rarusk@cisco.com"
+         $ git config --global user.email "rrusk@shaw.ca"
          $ git config --global color.ui "auto"
 
         On a Unix, OS X or Cygwin host, configure you favorite
