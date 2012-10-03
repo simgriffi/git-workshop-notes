@@ -1,0 +1,1558 @@
+# Based on http://gitimmersion.com labs
+
+# Check git version
+$ git --version
+git version 1.7.11.1
+
+# Example 1
+# INITIAL SETUP
+
+# 1.1 Setup Name and Email
+$ git config user.name
+
+$ git config user.email
+
+$ git config --global user.name "Raymond Rusk"
+$ git config --global user.email "rarusk@cisco.com"
+
+$ cat ~/.gitconfig
+[user]
+	name = Raymond Rusk
+	email = rarusk@cisco.com
+
+# Example 2
+# CREATE A PROJECT
+
+# 2.1 Create a Hello World program
+$ mkdir hello
+$ cd hello
+$ cat << EOF > hello.c
+#include <stdio.h>
+
+int main() {
+
+  printf("Hello, World\n");
+  return 0;
+}
+EOF
+
+$ gcc -Wall -o hello hello.c
+
+# 2.2 Create a git repository in the current directory
+$ git init
+Initialized empty Git repository in {current directory}/.git/
+
+# 2.3 Add the hello world program to the repository
+$ git add hello.c
+$ git commit -m "First Commit"
+[master (root-commit) a40cbd7] First Commit
+ 1 file changed, 7 insertions(+)
+ create mode 100644 hello.c
+# Your SHA1 values will differ
+
+# Example 3
+# CHECKING STATUS
+
+# 3.1 Check the status of the repository
+$ git status
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+nothing added to commit but untracked files present (use "git add" to track)
+
+# Example 4
+# MAKING CHANGES
+
+# 4.1 Change the hello world program
+$ cat << EOF > hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  printf("Hello, %s\n", argv[1]);
+  return 0;
+}
+EOF
+
+$ gcc -Wall -o hello hello.c
+
+# 4.2 Check the status
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# Example 5
+# STAGING CHANGES
+
+# 5.1 Add changes to staging.
+# Note that staging and committing changes are separate.
+$ git add hello.c
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+
+# Example 6
+# COMMITTING CHANGES
+
+# 6.1 Commmit the change with interactive comment editing
+$ export VISUAL=/usr/bin/vim
+$ git commit
+{ Note:  If you are using vim, go into insert mode by typing 'i',
+  then enter the comment "Using ARGV", hit Esc, :w, :x. }
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#       hello
+[master 5e754d9] Using ARGV
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+# 6.2 Check the status
+$ git status
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+nothing added to commit but untracked files present (use "git add" to track)
+
+# Example 7
+# GIT WORKS WITH CHANGES, NOT FILES
+
+# 7.1 First change: allow a default name
+cat << EOF > hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+EOF
+
+$ gcc -Wall -o hello hello.c
+
+# 7.2 Add this change
+$ git add hello.c
+
+# 7.3 Second change: Insert a comment
+cat << EOF > hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+EOF
+
+# 7.4 Check the current status
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   hello.c
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+
+# NOTE: hello.c is listed twice.  The first change, adding a default,
+# is staged and ready to be committed.  The second change, adding a
+# comment, is unstaged and will not be saved in the repository if we
+# do a commit now.
+
+# 7.5 Committing
+$ git commit -m"Added a default value"
+[master 42c5542] Added a default value
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# Note hello.c still have unrecorded changes but it is no longer in the
+# staging area.
+
+# 7.6 Add the second change
+$ git add hello.c
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+
+# 7.6 Add the Second Change
+$ git commit -m "Added a comment"
+
+# Example 8
+# HISTORY
+#
+$ git log
+commit 6c38d6469965f5d7f454ac5799c57395d1f684e8
+Author: Raymond Rusk <rarusk@cisco.com>
+Date:   Tue Oct 2 11:19:57 2012 -0700
+
+    Added a comment
+
+commit 42c55422ad3bd5ce2fa6bb7a226ed20019f562e3
+Author: Raymond Rusk <rarusk@cisco.com>
+Date:   Tue Oct 2 11:14:10 2012 -0700
+
+    Added a default value
+
+commit 5e754d96963fee14fac7ee22e98940bc1ae21927
+Author: Raymond Rusk <rarusk@cisco.com>
+Date:   Tue Oct 2 10:44:36 2012 -0700
+
+    Using ARGV
+
+commit a40cbd74ebe2c355443cd86a0778066c7b0d19bc
+Author: Raymond Rusk <rarusk@cisco.com>
+Date:   Tue Oct 2 10:04:46 2012 -0700
+
+    First Commit
+
+# 8.1 One Line Histories
+$ git log --pretty=oneline
+6c38d6469965f5d7f454ac5799c57395d1f684e8 Added a comment
+42c55422ad3bd5ce2fa6bb7a226ed20019f562e3 Added a default value
+5e754d96963fee14fac7ee22e98940bc1ae21927 Using ARGV
+a40cbd74ebe2c355443cd86a0778066c7b0d19bc First Commit
+
+# 8.2 Controlling Which Entries are Displayed.
+$ git log --pretty=oneline --since='1 day ago'
+$ git log --pretty=oneline --since='10 minute ago'
+
+# 8.3 Looking at all your changes in the last week.
+$ git log --all --pretty=format:"%h %cd %s (%an)" --author="Raymond Rusk" --since='7 days ago'
+
+# 8.4 The "Ultimate" Log Format
+$ git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
+* 6c38d64 2012-10-02 | Added a comment (HEAD, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 8.5 Another tool 
+# (may need to install it, requires GUI environment)
+$ gitk
+
+# Example 9
+# ALIASES
+
+# 8.1 Common Aliases
+$ cat << EOF >> ~/.gitconfig
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  lg = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+EOF
+
+# 8.2 Shell Aliases might also be useful.
+$ cat << EOF >> ~/.bashrc
+alias glog="git log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short"
+EOF
+
+# Example 10
+# CHECKOUT PREVIOUS VERSIONS
+
+# 10.1 Get hashes for previous versions
+#  NOTE: Your hash values will be different from mine
+$ git lg
+* 6c38d64 2012-10-02 | Added a comment (HEAD, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 10.2 Check out first commit
+$ git checkout a40cbd7
+Note: checking out 'a40cbd7'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at a40cbd7... First Commit
+$ cat hello.c
+#include <stdio.h>
+
+int main() {
+
+  printf("Hello, World\n");
+  return 0;
+}
+
+# 10.3 Return to the lastest version in the master branch
+#  Note: master is the default branch
+$ git checkout master
+$ cat hello.c
+$ git checkout master
+Previous HEAD position was a40cbd7... First Commit
+Switched to branch 'master'
+$ cat hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+
+# Example 11
+# # TAGGING VERSION
+
+# 11.1 Tagging version 1
+
+$ git tag v1  # current version of program is v1
+
+# 11.2 Tagging previous versions
+
+$ git checkout v1^
+Note: checking out 'v1^'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at 42c5542... Added a default value
+$ cat hello.c
+int main(int argc, char **argv) {
+
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+$ git tag v1-beta
+
+# 11.3 Checking out by Tag Name
+$ git checkout v1
+Previous HEAD position was 42c5542... Added a default value
+HEAD is now at 6c38d64... Added a comment
+$ git checkout v1-beta
+Previous HEAD position was 6c38d64... Added a comment
+HEAD is now at 42c5542... Added a default value
+
+# 11.4 Viewing Tags using the tag command
+$ git tag
+v1
+v1-beta
+
+# 11.5 Viewing Tags in the Logs
+$ git lg master --all
+* 6c38d64 2012-10-02 | Added a comment (v1, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (HEAD, v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 12
+# UNDOING LOCAL CHANGES (BEFORE STAGING)
+
+# 12.1 Checkout Master
+
+$ git checkout master
+Previous HEAD position was 42c5542... Added a default value
+Switched to branch 'master'
+
+# 12.2 Change hello.c
+
+$ echo "//This is a bad comment.  We will want to revert it" >> hello.c
+$ gcc -Wall -o hello hello.c
+$ cat hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+//This is a bad comment.  We will want to revert it
+
+# 12.3 Check the status
+
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# 12.4 Revert the changes in the working directory
+
+$ git checkout hello.c
+$ git status
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+nothing added to commit but untracked files present (use "git add" to track)
+$ cat hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+
+# Example 13
+# UNDOING STAGED CHANGES (BEFORE COMMITTING)
+
+# 13.1 Change the file and stage the change
+
+$ echo "//This is an unwanted but staged comment" >> hello.c
+$ git add hello.c
+
+# 13.2 Check the Status
+
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+
+# 13.3 Reset the Staging Area
+#  NOTE: Does not restore the working directory
+
+$ git reset HEAD hello.c
+Unstaged changes after reset:
+M	hello.c
+$ git status
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+no changes added to commit (use "git add" and/or "git commit -a")
+
+# 13.4 Restore the Committed Version of hello.c to the Working Directory
+
+$ git checkout hello.c
+$ git status
+# On branch master
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+nothing added to commit but untracked files present (use "git add" to track)
+
+# Example 14
+# UNDOING COMMITTED CHANGES
+# (Procedure that is always safe, even on branches that are publicly
+# shared on remote repositories.)
+
+# 14.1 Change the file and commit it.
+$ echo "//This is an unwanted but committed change" >> hello.c
+$ cat hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+//This is an unwanted but committed change
+
+$ git add hello.c
+$ git commit -m "Oops, we didn't want this commit"
+[master 91137bc] Oops, we didn't want this commit
+ 1 file changed, 1 insertion(+)
+
+# 14.2 Create a Reverting Commit
+#   Leave off '--no-edit' option to interactively add comment
+
+$ git revert HEAD --no-edit
+[master edaa0dc] Revert "Oops, we didn't want this commit"
+ 1 file changed, 1 deletion(-)
+
+# 14.3 Check the log
+
+$ git lg
+* edaa0dc 2012-10-02 | Revert "Oops, we didn't want this commit" (HEAD, master) 
+* 91137bc 2012-10-02 | Oops, we didn't want this commit [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+$ cat hello.c
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+
+# Example 15
+# ANOTHER WAY TO UNDO COMMITTED CHANGES
+# (Prevents bad commit showing up in the git log history.  Useful
+# on local branches but dangerous if the bad commit has already been
+# shared on a remote repository.)
+
+# 15.1 Check Our History
+
+$ git lg
+* edaa0dc 2012-10-02 | Revert "Oops, we didn't want this commit" (HEAD, master) 
+* 91137bc 2012-10-02 | Oops, we didn't want this commit [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 15.2 First Mark this Branch
+# (See 15.4 below.  Actually want to make sure there are no
+# references to the unwanted commits so that they can be
+# garbage collected.)
+
+$ git tag oops
+
+# 15.3 Reset to Before Oops
+#  The hard parameter indicates that the working directory should
+#  be updated to be consistent with the new branch head.
+
+$ git reset --hard v1
+HEAD is now at 6c38d64 Added a comment
+$ git lg
+* 6c38d64 2012-10-02 | Added a comment (HEAD, v1, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 15.4  Note Tagged Commits Still Remain Visible
+#  If we want the commits to not show up in the log, make sure they
+#  are not referenced.  Unreferenced commits will eventually
+#  be garbage collected.
+
+$ git lg --all
+* edaa0dc 2012-10-02 | Revert "Oops, we didn't want this commit" (oops) [Raymond
+* 91137bc 2012-10-02 | Oops, we didn't want this commit [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (HEAD, v1, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 16
+# REMOVING TAGS
+
+# 16.1  Remove the tag oops so that the undesired commits it referenced
+# can be garbage collected.
+
+$ git tag -d oops
+Deleted tag 'oops' (was edaa0dc)
+$ git lg --all
+* 6c38d64 2012-10-02 | Added a comment (HEAD, v1, master) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 17
+# AMENDING COMMITS
+
+# 17.1 Change the program and commit
+$ cat << EOF > hello.c
+/*
+ * Author: Raymond Rusk
+*/
+#include <stdhio.>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+EOF
+$ git add hello.c
+$ git commit -m "Add an author comment"
+[master f6e566d] Add an author comment
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+$ git lg
+* f6e566d 2012-10-02 | Add an author comment (HEAD, master) [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 17.2 Realized that an Email address should have been included
+
+$ cat << EOF > hello.c
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+EOF
+
+# 17.3 Amend the Previous Commit
+
+$ git add hello.c
+$ git commit --amend -m "Add an author/email comment"
+$ git commit --amend -m "Add an author/email comment"
+[master 7cde9e8] Add an author/email comment
+ 1 file changed, 3 insertions(+)
+
+# 17.4 Review the history
+[rarusk@w510 examples]$ git lg
+* 7cde9e8 2012-10-02 | Add an author/email comment (HEAD, master) [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 18
+# MOVING FILES
+
+# 18.1 Move hello.c to src directory.
+$ mkdir src
+$ git mv hello.c src
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	renamed:    hello.c -> src/hello.c
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	hello
+
+# 18.2 Another way to move files
+# Files can also be moved with OS commands.
+
+$ mkdir src
+$ mv hello.c src
+$ git add src/hello.c
+$ git rm hello.c
+
+# 18.3 Commit the new directory
+
+$ git commit -m"Moved hello.c to src"
+[master de06eab] Moved hello.c to src
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+  rename hello.c => src/hello.c (100%)
+
+# Example
+# ADD MORE STRUCTURE
+
+# 18.1 Add a Makefile
+# Create a file named makefile with this content.
+# Note that <tabs> are meaningful, don't replace
+# with spaces
+# --(cut here)--
+CC	= gcc
+CFLAGS	= -Wall
+
+all: hello
+
+hello: hello.o
+	$(CC) -o hello hello.o
+
+hello.o: src/hello.c
+	$(CC) $(CFLAGS) -c src/hello.c
+
+clean:
+	rm -f hello hello.o
+# --(cut here)--
+$ git add makefile
+
+# 18.2 Add .gitignore
+$ cat << EOF > .gitignore
+hello
+hello.o
+EOF
+$ git add .gitignore
+$ git status
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   .gitignore
+#	new file:   makefile
+
+# 18.3 Commit changes
+
+$ git commit -m"Added a makefile and .gitignore"
+[master 11075a2] Added a makefile and .gitignore
+  2 files changed, 15 insertions(+)
+   create mode 100644 .gitignore
+    create mode 100644 makefile
+$ git status
+# On branch master
+nothing to commit (working directory clean)
+
+# Examples 19
+# CREATING A BRANCH
+
+# 19.1 Create a Branch
+
+$ git checkout -b greet
+Switched to a new branch 'greet'
+$ git status
+# On branch greet
+nothing to commit (working directory clean)
+
+
+# 19.2 Changes for new branch: Add a greeter function.
+#
+
+$ cat << EOF > src/greeter.c 
+#include <stdio.h>
+
+void greeter(char *name) {
+  printf("Hello, %s\n", name);
+}
+EOF
+
+$ git add src/greeter.c
+$ git commit -m "Added greeter function"
+
+# 19.3 Changes for greet branch: Modify main program
+$ cat << EOF > src/hello.c
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+
+  extern void greeter(char *);
+
+  int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  greeter(name);
+  return 0;
+}
+EOF
+
+$ git add src/hello.c
+$ git commit -m "hello uses greeter"
+
+
+# 19.4 Update makefile on greet branch
+# --(start of makefile)--
+CC= gcc
+CFLAGS= -Wall
+
+all: hello
+
+hello: hello.o greeter.o
+	$(CC) -o hello hello.o greeter.o
+
+hello.o: src/hello.c
+	$(CC) $(CFLAGS) -c src/hello.c
+
+greeter.o: src/greeter.c
+	$(CC) $(CFLAGS) -c src/greeter.c
+
+clean:
+	rm -f hello hello.o greeter.o
+# --(end of makefile)--
+
+$ cat << EOF > .gitignore
+hello
+hello.o
+greeter.o
+EOF
+
+$ git status
+# On branch greet
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   .gitignore
+#	modified:   makefile
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+$ git add makefile .gitignore
+$ git commit -m "Updated makefile"
+[greet 3aafd97] Updated makefile
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+# Example 20
+# NAVIGATING BRANCHES
+
+$ git lg --all
+* 3aafd97 2012-10-02 | Updated makefile (HEAD, greet) [Raymond Rusk]
+* b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+* f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore (master) [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 20.1 Switch to the Master Branch
+$ git checkout master
+Switched to branch 'master'
+$ cat src/hello.c
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  printf("Hello, %s\n", name);
+  return 0;
+}
+$ make
+
+# 20.2 Switch back to the Greet Branch
+$ git checkout greet
+Switched to branch 'greet'
+$ cat src/hello.c
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+
+extern void greeter(char *);
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *name = "World";
+  if (argc > 1) {
+    name = argv[1];
+  }
+  greeter(name);
+  return 0;
+}
+$ make
+
+# Example 21
+# CHANGES IN MASTER
+
+# 21.1 Switch to the master branch
+$ git checkout master
+Switched to branch 'master'
+
+# 21.2 Create the REAMDE
+$ echo "This is the Hello World example from the git tutorial" >> README
+
+# 21.3 Commit the README to master
+$ git add README
+$ git commit -m "Added README"
+[master dc1855c] Added README
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README
+
+# Example 22
+# VIEWING DIVERGING BRANCHES
+
+# 22.1 View All of the Current Branches
+
+$ git lg --all
+* dc1855c 2012-10-02 | Added README (HEAD, master) [Raymond Rusk]
+| * 3aafd97 2012-10-02 | Updated makefile (greet) [Raymond Rusk]
+| * b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+| * f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 23
+# MERGING
+
+# 23.1 Merge the branches
+
+$ git checkout greet
+Switched to branch 'greet'
+$ git status
+# On branch greet
+nothing to commit (working directory clean)
+$ git merge master
+Merge made by the 'recursive' strategy.
+ README | 1 +
+  1 file changed, 1 insertion(+)
+   create mode 100644 README
+$ git lg --all
+*   0b69a11 2012-10-02 | Merge branch 'master' into greet (HEAD, greet) [Raymond
+|\  
+| * dc1855c 2012-10-02 | Added README (master) [Raymond Rusk]
+* | 3aafd97 2012-10-02 | Updated makefile [Raymond Rusk]
+* | b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+* | f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 24
+# CREATE A CONFLICT
+
+# 24.1 Switch back to master and create a conflict
+
+$ git checkout master
+$ cat << EOF > src/hello.c 
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *ans = "World";
+  if (argc > 1) {
+    ans = argv[1];
+  }
+  printf("Greetings, %s\n", ans);
+  return 0;
+  }
+EOF
+
+$ git add src/hello.c
+$ git commit -m "Made conflicting change."
+[master 18edf5d] Made conflicting change.
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+# 24.2 View the Branches
+$ git lg --all
+* 18edf5d 2012-10-02 | Made conflicting change. (HEAD, master) [Raymond Rusk]
+| *   0b69a11 2012-10-02 | Merge branch 'master' into greet (greet) [Raymond Rus
+| |\  
+| |/  
+|/|   
+* | dc1855c 2012-10-02 | Added README [Raymond Rusk]
+| * 3aafd97 2012-10-02 | Updated makefile [Raymond Rusk]
+| * b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+| * f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 25
+# RESOLVING CONFLICTS
+
+# 25.1 Merge master to greet
+$ git checkout greet
+Switched to branch 'greet'
+$ git merge master
+Auto-merging src/hello.c
+CONFLICT (content): Merge conflict in src/hello.c
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ cat src/hello.c
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+
+  extern void greeter(char *);
+
+  int main(int argc, char **argv) {
+
+  /* Default is "World" */
+  char *ans = "World";
+  if (argc > 1) {
+    ans = argv[1];
+  }
+<<<<<<< HEAD
+  greeter(name);
+=======
+  printf("Greetings, %s\n", ans);
+>>>>>>> master
+  return 0;
+  }
+
+# 25.2 Fix the Conflict
+#   We need to manually resolve the conflict.  Change src/hello.c to read:
+
+/*
+ * Author: Raymond Rusk (rarusk@cisco.com)
+*/
+
+  extern void greeter(char *);
+
+  int main(int argc, char **argv) {
+
+    /* Default is "World" */
+    char *ans = "World";
+    if (argc > 1) {
+      ans = argv[1];
+    }
+    greeter(ans);
+    return 0;
+  }
+
+# 25.3 Commit the Conflict Resolution
+
+$ git add src/hello.c
+$ git commit -m "Merged master fixed conflict"
+[greet 79d7aed] Merged master fixed conflict
+
+# 25.4 Advanced Merging
+# For more complicted merge conflicts involving many directories
+# and files, you should investigate 3-rd party merge tools.  For
+# Unix systems, "diffmerge" (http://www.sourcegear.com/diffmerge/)
+# is useful.
+
+# Example 26
+# RESETTING THE GREET BRANCH
+
+# 26.1 Reset the greet branch to the point before the first merge.
+
+$ git checkout greet
+Already on 'greet'
+$ git lg
+*   79d7aed 2012-10-02 | Merged master fixed conflict (HEAD, greet) [Raymond Rus
+|\  
+| * 18edf5d 2012-10-02 | Made conflicting change. (master) [Raymond Rusk]
+* |   0b69a11 2012-10-02 | Merge branch 'master' into greet [Raymond Rusk]
+|\ \  
+| |/  
+| * dc1855c 2012-10-02 | Added README [Raymond Rusk]
+* | 3aafd97 2012-10-02 | Updated makefile [Raymond Rusk]
+* | b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+* | f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+$ git reset --hard 3aafd97
+HEAD is now at 3aafd97 Updated makefile
+
+# 26.2 Check the branch
+
+$ git lg --all
+* 18edf5d 2012-10-02 | Made conflicting change. (master) [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README [Raymond Rusk]
+| * 3aafd97 2012-10-02 | Updated makefile (HEAD, greet) [Raymond Rusk]
+| * b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+| * f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 27
+# RESETTING THE MASTER BRANCH
+
+# 27.1 Reset the master branch to the oint before the conflicting commit
+
+$ git checkout master
+Switched to branch 'master'
+$ git lg
+* 18edf5d 2012-10-02 | Made conflicting change. (HEAD, master) [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+$ git reset --hard dc1855c
+HEAD is now at dc1855c Added README
+$ git lg --all
+* dc1855c 2012-10-02 | Added README (HEAD, master) [Raymond Rusk]
+| * 3aafd97 2012-10-02 | Updated makefile (greet) [Raymond Rusk]
+| * b35c1d0 2012-10-02 | hello uses greeter [Raymond Rusk]
+| * f501159 2012-10-02 | Added greeter function [Raymond Rusk]
+|/  
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 28
+# REBASING
+
+# 28.1 Merge changes in master to greet branch
+#   Using 'git rebase' the commit tree for the greet
+#   branch is rewritten so that the master branch is
+#   part of the commit history.  This leaves the chain
+#   of commits linear and easier to read.
+$ git checkout greet
+Switched to branch 'greet'
+$ git rebase master
+First, rewinding head to replay your work on top of it...
+Applying: Added greeter function
+Applying: hello uses greeter
+Applying: Updated makefile
+$ git lg
+* ab9876e 2012-10-02 | Updated makefile (HEAD, greet) [Raymond Rusk]
+* c8d1186 2012-10-02 | hello uses greeter [Raymond Rusk]
+* 2809cb2 2012-10-02 | Added greeter function [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README (master) [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 28.2  Rebase VS Merge
+# Don't rebase when the branch is public and shared with others.
+# Use for local branches only.
+
+# Example 29
+# MERGING BACK TO MASTER
+
+# 29.1 Merge greet into master
+$ git checkout master
+Switched to branch 'master'
+$ git merge greet
+Updating dc1855c..ab9876e
+Fast-forward
+ .gitignore    |    1 +
+ makefile      |    9 ++++++---
+ src/greeter.c |    5 +++++
+ src/hello.c   |    7 ++++---
+ 4 files changed, 16 insertions(+), 6 deletions(-)
+ create mode 100644 src/greeter.c
+
+# 29.2 Review the logs
+# greet and master branches are now identical
+$ git lg
+* ab9876e 2012-10-02 | Updated makefile (HEAD, master, greet) [Raymond Rusk]
+* c8d1186 2012-10-02 | hello uses greeter [Raymond Rusk]
+* 2809cb2 2012-10-02 | Added greeter function [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 30
+# WORKING WITH MULTIPLE REPOSITORIES
+
+# 30.1 Clone our current hello repository
+$ cd ..
+$ git clone hello cloned_hello
+Initialized empty Git repository in /home/rrusk/Courses/git/cloned_hello/.git/
+$ ls -lat hello
+total 28
+drwxrwxr-x. 9 rrusk rrusk 4096 Oct  2 17:37 ..
+drwxr-xr-x. 8 rrusk rrusk 4096 Oct  2 17:27 .git
+drwxr-xr-x. 2 rrusk rrusk 4096 Oct  2 17:27 src
+drwxrwxr-x. 4 rrusk rrusk 4096 Oct  2 17:27 .
+-rw-rw-r--. 1 rrusk rrusk   24 Oct  2 17:27 .gitignore
+-rw-rw-r--. 1 rrusk rrusk  247 Oct  2 17:27 makefile
+-rw-rw-r--. 1 rrusk rrusk   54 Oct  2 17:22 README
+$ ls -lat cloned_hello
+total 28
+drwxr-xr-x. 4 rrusk rrusk 4096 Oct  2 17:37 .
+drwxrwxr-x. 8 rrusk rrusk 4096 Oct  2 17:37 .git
+-rw-rw-r--. 1 rrusk rrusk   24 Oct  2 17:37 .gitignore
+-rw-rw-r--. 1 rrusk rrusk  247 Oct  2 17:37 makefile
+-rw-rw-r--. 1 rrusk rrusk   54 Oct  2 17:37 README
+drwxrwxr-x. 2 rrusk rrusk 4096 Oct  2 17:37 src
+drwxrwxr-x. 9 rrusk rrusk 4096 Oct  2 17:37 ..
+
+# 30.2 Review the cloned repository history
+# Note origin/master, origin/greet and origin/HEAD.
+$ cd cloned_hello
+$ git lg --all
+* ab9876e 2012-10-02 | Updated makefile (HEAD, origin/master, origin/greet, orig
+* c8d1186 2012-10-02 | hello uses greeter [Raymond Rusk]
+* 2809cb2 2012-10-02 | Added greeter function [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# Example 31
+# WHAT IS ORIGIN?
+
+$ git remote
+origin
+
+$ git remote show origin
+* remote origin
+  Fetch URL: /home/rrusk/Courses/git/hello
+  Push  URL: /home/rrusk/Courses/git/hello
+  HEAD branch (remote HEAD is ambiguous, may be one of the following):
+    greet
+    master
+  Remote branches:
+    greet  tracked
+    master tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (up to date)
+
+# Example 32
+# REMOTE BRANCHES
+
+$ git branch
+* master
+
+# 32.1 List All (including Remote) Branches
+$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/greet
+  remotes/origin/master
+
+# Example 33
+# CHANGE THE ORIGIN/REMOTE REPOSITORY
+
+# 33.1 Change the original hello repository
+$ cd ../hello
+$ cat << EOF > README
+This is the Hello World example from the git tutorial.
+(changed in original)
+EOF
+
+$ git add README
+$ git commit -m"Changed README in original repo"
+[master e4a4480] Changed README in original repo
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+# Example 34
+# FETCHING CHANGES
+
+$ cd ../cloned_hello/
+$ git fetch
+remote: Counting objects: 5, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From /home/rrusk/Courses/git/hello
+   ab9876e..e4a4480  master     -> origin/master
+
+$ git lg --all
+* e4a4480 2012-10-02 | Changed README in original repo (origin/master, origin/HE
+* ab9876e 2012-10-02 | Updated makefile (HEAD, origin/greet, master) [Raymond Ru
+* c8d1186 2012-10-02 | hello uses greeter [Raymond Rusk]
+* 2809cb2 2012-10-02 | Added greeter function [Raymond Rusk]
+* dc1855c 2012-10-02 | Added README [Raymond Rusk]
+* 11075a2 2012-10-02 | Added a makefile and .gitignore [Raymond Rusk]
+* de06eab 2012-10-02 | Moved hello.c to src [Raymond Rusk]
+* 7cde9e8 2012-10-02 | Add an author/email comment [Raymond Rusk]
+* 6c38d64 2012-10-02 | Added a comment (v1) [Raymond Rusk]
+* 42c5542 2012-10-02 | Added a default value (v1-beta) [Raymond Rusk]
+* 5e754d9 2012-10-02 | Using ARGV [Raymond Rusk]
+* a40cbd7 2012-10-02 | First Commit [Raymond Rusk]
+
+# 34.1 Check the README
+$ cat README
+This is the Hello World example from the git tutorial
+
+# Example 35
+# MERGING FETCHED CHANGES
+
+$ git merge origin/master
+Updating ab9876e..e4a4480
+Fast-forward
+ README |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+$ cat README
+This is the Hello World example from the git tutorial.
+(changed in original)
+
+# Example 36
+# PULLING CHANGES
+
+The command "git pull" is equivalent to
+  git fetch
+  git merge origin/master
+
+# Example 37
+# ADDING A TRACKING BRANCH
+
+# Add a local branch that tracks a remote branch
+
+$ git branch --track greet origin/greet
+Branch greet set up to track remote branch greet from origin.
+
+$ git branch -a
+  greet
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/greet
+  remotes/origin/master
+
+$ git lg --max-count=2
+* e4a4480 2012-10-02 | Changed README in original repo (HEAD, origin/master, ori
+* ab9876e 2012-10-02 | Updated makefile (origin/greet, greet) [Raymond Rusk]
+
+# Example 39
+# PUSHING A CHANGE
+
+# In cloned_hello
+$ git checkout master
+$ cat << EOF > README
+This is the Hello World example from the git tutorial.
+(Changed in both the original and clone and pushed back to original)
+EOF
+
+$ git add README
+$ git commit -m"Modified readme in clone"
+[master d8766ee] Modified readme in clone
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+# 39.1 A Failed Push to hello repository
+$ git branch -a
+  greet
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/greet
+  remotes/origin/master
+
+$ git push origin master
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 445 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+remote: error: refusing to update checked out branch: refs/heads/master
+remote: error: By default, updating the current branch in a non-bare repository
+remote: error: is denied, because it will make the index and work tree inconsistent
+remote: error: with what you pushed, and will require 'git reset --hard' to match
+remote: error: the work tree to HEAD.
+remote: error: 
+remote: error: You can set 'receive.denyCurrentBranch' configuration variable to
+remote: error: 'ignore' or 'warn' in the remote repository to allow pushing into
+remote: error: its current branch; however, this is not recommended unless you
+remote: error: arranged to update its work tree to match what you pushed in some
+remote: error: other way.
+remote: error: 
+remote: error: To squelch this message and still keep the default behaviour, set
+remote: error: 'receive.denyCurrentBranch' configuration variable to 'refuse'.
+To /home/rrusk/Courses/git/hello
+ ! [remote rejected] master -> master (branch is currently checked out)
+error: failed to push some refs to '/home/rrusk/Courses/git/hello'
+
+# Example 40
+# CREATE BARE REPOSITORY
+
+# 40.1 Create a bare repository
+$ cd ..
+
+$ git clone --bare hello hello.git
+Initialized empty Git repository in /home/rrusk/Courses/git/hello.git/
+
+$ ls hello.git
+branches  config  description  HEAD  hooks  info  objects  packed-refs  refs
+
+# 40.2 Add bare repository as a remote for original repository
+
+$ cd hello
+$ git remote add shared ../hello.git
+
+# 40.3 Add bare repository as a remote for the cloned repository
+
+$ cd ../cloned_hello
+
+$ git remote add shared ../hello.git
+
+$ git branch --track shared master
+Branch shared set up to track local branch master.
+
+$ git push shared master
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 445 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+To ../hello.git
+   e4a4480..d8766ee  master -> master
+
+$ cat README
+This is the Hello World example from the git tutorial.
+(Changed in both the original and clone and pushed back to original)
+
+# 40.4 Pull changes from the shared repository
+
+$ cd ../hello
+
+$ cat README
+This is the Hello World example from the git tutorial.
+(changed in original)
+
+$ git pull shared master
+From ../hello
+ * branch            master     -> FETCH_HEAD
+Updating e4a4480..d8766ee
+Fast-forward
+ README |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+$ cat README
+This is the Hello World example from the git tutorial.
+(Changed in both the original and clone and pushed back to original)
+
