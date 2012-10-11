@@ -10,6 +10,7 @@ This [mini-workshop](https://github.com/rrusk/git-workshop-notes) is partially b
 3. Wikipedia [Git (Software)](http://en.wikipedia.org/wiki/Git_%28software%29)
 4. "Getting Started with Git" by Matthew McCullough, [DZone Refcardz](http://refcardz.dzone.com)
 5. [Gitimmersion.com](http://gitimmersion.com) online Git lab
+6. [Mastering Git Basics](http://vimeo.com/17118008) - Video tutorial on git basics with Github's co-founder Tom Preston-Werner
 
 ##Git Overview
 
